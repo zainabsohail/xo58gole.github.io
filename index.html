@@ -1,1158 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zainab Sohail | AI, Data &amp; Digital Solutions</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:       #050b15;
-      --bg2:      #080f1e;
-      --surface:  #0c1525;
-      --surface2: #101c30;
-      --cyan:     #00c8f0;
-      --cyan2:    #00e5ff;
-      --cyan-dim: rgba(0,200,240,0.12);
-      --cyan-border: rgba(0,200,240,0.25);
-      --text:     #ffffff;
-      --muted:    #7a90a8;
-      --border:   rgba(255,255,255,0.07);
-      --radius:   10px;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Space Grotesk', system-ui, sans-serif;
-      font-weight: 400;
-      line-height: 1.7;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    a { color: inherit; text-decoration: none; }
-    /* ─── SUBTLE STATIC GRID BG ─── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(0,200,240,0.04) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0,100,200,0.05) 0%, transparent 50%),
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2.5rem;
-      height: 64px;
-      background: rgba(5,11,21,0.8);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .nav-avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), #0070f3);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem; color: #fff;
-      border: 1.5px solid var(--cyan-border);
-      flex-shrink: 0;
-    }
-    .nav-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      list-style: none;
-    }
-    .nav-links a {
-      padding: 0.4rem 1rem;
-      border-radius: 999px;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-weight: 500;
-      transition: color .2s, background .2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--text);
-      background: rgba(255,255,255,0.07);
-    }
-    .nav-links a.active {
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .nav-cv {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 1.1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      transition: border-color .2s, background .2s;
-    }
-    .nav-cv:hover { border-color: var(--cyan); background: var(--cyan-dim); }
-    /* ─── HERO ─── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem 2.5rem 4rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero-location {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-    .hero-location svg { width: 14px; height: 14px; flex-shrink: 0; }
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: clamp(3.5rem, 10vw, 8rem);
-      line-height: 1;
-      letter-spacing: -0.02em;
-      color: #fff;
-      margin-bottom: 1rem;
-    }
-    .hero-role {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.25rem, 3vw, 2rem);
-      font-weight: 500;
-      color: var(--cyan);
-      margin-bottom: 1.25rem;
-    }
-    .hero-bio {
-      max-width: 520px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 300;
-      line-height: 1.75;
-      margin-bottom: 2rem;
-    }
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 2.5rem;
-    }
-    .btn-cyan {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.6rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--cyan), #0090d4);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-      transition: opacity .2s, transform .15s;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-cyan:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.6rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.9rem;
-      background: transparent;
-      transition: border-color .2s, background .2s;
-      cursor: pointer;
-    }
-    .btn-ghost:hover { border-color: var(--cyan); background: var(--cyan-dim); }
-    .hero-social {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .hero-social a {
-      color: var(--muted);
-      transition: color .2s;
-    }
-    .hero-social a:hover { color: var(--cyan); }
-    .hero-social svg { width: 22px; height: 22px; }
-    /* ─── SCROLL HINT ─── */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-    .scroll-mouse {
-      width: 22px; height: 34px;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 999px;
-      display: flex;
-      justify-content: center;
-      padding-top: 6px;
-    }
-    .scroll-dot {
-      width: 4px; height: 7px;
-      background: var(--cyan);
-      border-radius: 999px;
-    }
-    /* ─── SECTION WRAPPER ─── */
-    .section {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 5rem 2.5rem;
-      border-top: 1px solid var(--border);
-    }
-    .section-eyebrow {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.6rem;
-    }
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 600;
-      line-height: 1.15;
-      margin-bottom: 2.5rem;
-    }
-    /* ─── RESEARCH STATEMENT ─── */
-    .statement-grid {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 3rem;
-      align-items: start;
-    }
-    .statement-text p {
-      color: var(--muted);
-      font-size: 0.875rem;
-      font-weight: 300;
-      line-height: 1.85;
-      margin-bottom: 1.1rem;
-    }
-    .statement-text p:last-child { margin-bottom: 0; }
-    .statement-text strong { color: var(--text); font-weight: 500; }
-    .statement-aside { display: flex; flex-direction: column; gap: 1rem; }
-    .aside-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-    }
-    .aside-box h4 {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--cyan);
-      margin-bottom: 0.75rem;
-    }
-    .aside-box ul { list-style: none; }
-    .aside-box li {
-      font-size: 0.875rem;
-      font-weight: 300;
-      color: var(--muted);
-      padding: 0.2rem 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    .aside-box li::before { content: '›'; color: var(--cyan); font-weight: 600; flex-shrink: 0; }
-    .aside-box li a { color: var(--cyan); transition: color .2s; }
-    .aside-box li a:hover { color: var(--cyan2); text-decoration: underline; }
-    .stat-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
-    .stat-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-    }
-    .stat-card .val {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--cyan);
-      display: block;
-      line-height: 1;
-      margin-bottom: 0.3rem;
-    }
-    .stat-card .lbl { font-size: 0.72rem; color: var(--muted); line-height: 1.3; }
-    .placeholder-val {
-      font-size: 0.7rem !important;
-      color: rgba(0,200,240,0.6) !important;
-      font-style: italic;
-    }
-    .insight-box {
-      background: var(--surface);
-      border-left: 3px solid var(--cyan);
-      border-radius: 0 10px 10px 0;
-      padding: 1rem 1.25rem;
-      margin: 1.25rem 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    .insight-box strong { color: var(--text); font-weight: 500; }
-    /* ─── INTERESTS GRID ─── */
-    .interests-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .interest-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: border-color .2s, background .2s;
-    }
-    .interest-card:hover {
-      border-color: var(--cyan-border);
-      background: var(--surface2);
-    }
-    .interest-card .icon {
-      font-size: 1.6rem;
-      margin-bottom: 0.75rem;
-      display: block;
-    }
-    .interest-card h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.4rem; }
-    .interest-card p { font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.65; }
-    /* ─── PROJECTS ─── */
-    .projects-list { display: flex; flex-direction: column; gap: 1.25rem; }
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      transition: border-color .2s;
-    }
-    .project-card:hover { border-color: var(--cyan-border); }
-    .project-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .project-top h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-    }
-    .project-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      border: 1px solid var(--cyan-border);
-      border-radius: 999px;
-      padding: 0.2rem 0.75rem;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .project-sub {
-      font-size: 0.82rem;
-      color: var(--cyan);
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-    .project-desc {
-      font-size: 0.875rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 1.25rem;
-    }
-    .project-findings {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-    .finding-pill {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.75rem;
-      text-align: center;
-    }
-    .finding-pill .fval {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--cyan);
-      display: block;
-    }
-    .finding-pill .flbl { font-size: 0.72rem; color: var(--muted); }
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .tag {
-      font-size: 0.78rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      border-radius: 6px;
-      padding: 0.2rem 0.65rem;
-    }
-    .project-links {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 1.25rem;
-    }
-    .project-links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--cyan);
-      border: 1px solid var(--cyan-border);
-      border-radius: 999px;
-      padding: 0.35rem 0.95rem;
-      transition: background .2s, border-color .2s;
-    }
-    .project-links a:hover { background: var(--cyan-dim); border-color: var(--cyan); }
-    /* ─── SKILLS ─── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-    .skill-group {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      transition: border-color .2s;
-    }
-    .skill-group:hover { border-color: var(--cyan-border); }
-    .skill-group h3 {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--cyan);
-      margin-bottom: 0.85rem;
-    }
-    .skill-group ul { list-style: none; }
-    .skill-group li {
-      font-size: 0.875rem;
-      font-weight: 300;
-      color: var(--muted);
-      padding: 0.2rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .skill-group li::before {
-      content: '';
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--cyan);
-      flex-shrink: 0;
-      opacity: 0.6;
-    }
-    /* ─── EXPERIENCE ─── */
-    .exp-list { display: flex; flex-direction: column; gap: 0; }
-    .exp-item {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .exp-item:last-child { border-bottom: none; }
-    .exp-date { font-size: 0.8rem; color: var(--muted); padding-top: 0.15rem; }
-    .exp-role {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.15rem;
-    }
-    .exp-org { font-size: 0.875rem; color: var(--cyan); font-weight: 500; margin-bottom: 0.75rem; }
-    .exp-bullets { list-style: none; }
-    .exp-bullets li {
-      font-size: 0.875rem;
-      font-weight: 300;
-      color: var(--muted);
-      padding: 0.22rem 0;
-      display: flex;
-      gap: 0.6rem;
-      align-items: flex-start;
-    }
-    .exp-bullets li::before {
-      content: '·';
-      color: var(--cyan);
-      flex-shrink: 0;
-      opacity: 0.5;
-    }
-    /* ─── EDUCATION ─── */
-    .edu-list { display: flex; flex-direction: column; gap: 1rem; }
-    .edu-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1.5rem;
-      transition: border-color .2s;
-    }
-    .edu-card:hover { border-color: var(--cyan-border); }
-    .edu-degree {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .edu-inst { font-size: 0.875rem; color: var(--cyan); font-weight: 500; margin-bottom: 0.5rem; }
-    .edu-courses { font-size: 0.82rem; font-weight: 300; color: var(--muted); max-width: 500px; }
-    .edu-year { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
-    .gpa-chip {
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-size: 0.72rem;
-      background: var(--cyan-dim);
-      color: var(--cyan);
-      border: 1px solid var(--cyan-border);
-      border-radius: 999px;
-      padding: 0.15rem 0.6rem;
-    }
-    /* ─── CONTACT ─── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-    .contact-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      transition: border-color .2s, background .2s;
-    }
-    .contact-card:hover { border-color: var(--cyan-border); background: var(--surface2); }
-    .contact-card .c-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.35rem;
-    }
-    .contact-card .c-val {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-    .contact-card a.c-val { color: var(--cyan); }
-    .contact-card a.c-val:hover { text-decoration: underline; }
-    .contact-cta {
-      margin-top: 2rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    /* ─── FOOTER ─── */
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-    footer span { color: var(--cyan); }
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
-      nav { padding: 0 1.25rem; }
-      .nav-links { display: none; }
-      .hero { padding: 6rem 1.25rem 4rem; }
-      .section { padding: 3.5rem 1.25rem; }
-      .statement-grid { grid-template-columns: 1fr; }
-      .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
-      .edu-card { flex-direction: column; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zainab Sohail — Data & Business Analyst</title>
+<meta name="description" content="Zainab Sohail: data and business analyst at Siemens Healthineers, finishing an M.Sc. in AI at FAU Erlangen-Nürnberg.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fog:#EDF1F4; --paper:#F7F9FA; --ink:#0F2340; --petrol:#1F4E79;
+  --amber:#E3A13A; --slate:#5A6B7F; --rule:#CDD6DF; --screen:#0C1C33;
+  --display:'Bricolage Grotesque', system-ui, sans-serif;
+  --body:'IBM Plex Sans', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--fog);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(237,241,244,.86);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+nav.scrolled{border-color:var(--rule)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.mono{font:800 20px/1 var(--display);letter-spacing:-.02em;text-decoration:none;display:flex;gap:2px}
+.mono span:last-child{color:var(--petrol)}
+.links{display:flex;gap:28px;align-items:center;list-style:none}
+.links a{text-decoration:none;font-size:15px;color:var(--slate)}
+.links a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1.5px solid var(--ink);text-decoration:none;font:500 15px/1 var(--body);background:none;cursor:pointer;color:var(--ink)}
+.btn:hover{background:var(--ink);color:var(--fog)}
+.btn.solid{background:var(--ink);color:var(--fog)}
+.btn.solid:hover{background:var(--petrol);border-color:var(--petrol)}
+.menu-btn{display:none}
+
+/* hero */
+.hero{padding:72px 0 0;position:relative}
+.hero h1{font:800 clamp(56px,11vw,148px)/.88 var(--display);letter-spacing:-.045em;font-variation-settings:'opsz' 96}
+.hero h1 .last{color:var(--petrol)}
+.hero-meta{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;margin-top:36px;align-items:end}
+.lede{font:400 clamp(20px,2.2vw,26px)/1.35 var(--display);max-width:30ch}
+.facts{list-style:none;display:grid;gap:10px;font-size:15px;color:var(--slate)}
+.facts li{display:flex;gap:12px;align-items:baseline}
+.facts b{color:var(--ink);font-weight:600;min-width:84px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block;box-shadow:0 0 0 0 rgba(227,161,58,.6);animation:ping 2.4s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(227,161,58,.55)}80%,100%{box-shadow:0 0 0 10px rgba(227,161,58,0)}}
+.trace-box{position:relative;margin-top:28px;height:230px;cursor:crosshair;touch-action:pan-y}
+.trace-box canvas{width:100%;height:100%;display:block}
+.trace-hint{position:absolute;right:28px;bottom:14px;font-size:13px;color:var(--slate)}
+.hero-cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+
+/* marquee */
+.marquee{border-block:1px solid var(--rule);overflow:hidden;white-space:nowrap;padding:16px 0;background:var(--paper)}
+.marquee-track{display:inline-flex;gap:48px;animation:slide 38s linear infinite;font:600 22px/1 var(--display);letter-spacing:-.01em}
+.marquee-track span{display:inline-flex;align-items:center;gap:48px}
+.marquee-track span::after{content:"";width:10px;height:10px;border:2px solid var(--petrol);border-radius:50%}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* section heads */
+section{padding:110px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:44px;flex-wrap:wrap}
+.head h2{font:800 clamp(38px,5vw,64px)/1 var(--display);letter-spacing:-.035em}
+.head p{max-width:42ch;color:var(--slate)}
+
+/* projects */
+#projects{background:var(--ink);color:#E6ECF2}
+#projects .head p{color:#9DB0C4}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{border:1px solid #2C4566;background:none;color:#B9C8D8;border-radius:999px;padding:7px 14px;font:500 14px/1 var(--body);cursor:pointer}
+.chip[aria-pressed="true"]{background:#E6ECF2;color:var(--ink);border-color:#E6ECF2}
+.lab{display:grid;grid-template-columns:minmax(260px,.85fr) 1.4fr;gap:28px;align-items:start}
+.plist{list-style:none;border-top:1px solid #23395A}
+.plist li{border-bottom:1px solid #23395A}
+.plist li[hidden]{display:none}
+.pbtn{width:100%;text-align:left;background:none;border:0;color:inherit;padding:18px 6px 18px 18px;cursor:pointer;display:grid;gap:4px;position:relative;font-family:inherit}
+.pbtn::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:transparent;transition:background .2s}
+.pbtn[aria-selected="true"]::before{background:var(--amber)}
+.pbtn .t{font:600 21px/1.2 var(--display);letter-spacing:-.01em}
+.pbtn .s{font-size:14px;color:#8EA3B9}
+.pbtn:hover .t{color:#fff}
+.pbtn[aria-selected="true"] .t{color:#fff}
+.screen{background:var(--screen);border:1px solid #23395A;border-radius:18px;overflow:hidden;position:sticky;top:90px}
+.screen-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #1B3050;font-size:13px;color:#8EA3B9}
+.status{display:inline-flex;align-items:center;gap:8px}
+.status i{width:7px;height:7px;border-radius:50%;background:#4FB286}
+.status.wip i{background:var(--amber)}
+.screen canvas{display:block;width:100%;aspect-ratio:16/9;background:var(--screen)}
+.screen-body{padding:22px 24px 26px;border-top:1px solid #1B3050}
+.screen-body h3{font:800 28px/1.1 var(--display);letter-spacing:-.02em;color:#fff}
+.screen-body p{margin-top:10px;color:#B9C8D8;max-width:62ch}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;list-style:none}
+.tags li{font-size:13px;padding:4px 10px;border-radius:6px;background:#162A47;color:#C9D6E3}
+.plink{display:inline-block;margin-top:18px;color:var(--amber);font-weight:500;text-underline-offset:4px}
+.plink.off{color:#8EA3B9;text-decoration:none}
+.illus{font-size:12px;color:#5F7690;padding:0 16px 10px;text-align:right;background:var(--screen)}
+
+/* experience */
+.timeline{list-style:none;border-left:2px solid var(--rule);margin-left:8px}
+.timeline li{position:relative;padding:0 0 8px 34px}
+.timeline li::before{content:"";position:absolute;left:-8px;top:26px;width:14px;height:14px;border-radius:50%;background:var(--fog);border:2px solid var(--petrol)}
+.timeline li.now::before{background:var(--amber);border-color:var(--amber)}
+details{border-bottom:1px solid var(--rule)}
+summary{list-style:none;cursor:pointer;padding:18px 0;display:grid;grid-template-columns:1fr auto;gap:4px 24px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary .role{font:600 22px/1.25 var(--display);letter-spacing:-.01em}
+summary .when{font-size:14px;color:var(--slate);white-space:nowrap}
+summary .org{color:var(--petrol);font-weight:500;font-size:15px}
+summary .plus{grid-row:1/3;grid-column:3;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;transition:transform .25s, background .2s;font-size:18px;line-height:1;color:var(--slate)}
+details[open] summary .plus{transform:rotate(45deg);background:var(--ink);color:#fff;border-color:var(--ink)}
+details ul{padding:0 0 22px 18px;max-width:70ch;color:#33465D}
+details li{padding:3px 0}
+
+.edu{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:56px}
+.edu div{background:var(--paper);border:1px solid var(--rule);border-radius:14px;padding:22px 24px}
+.edu h3{font:600 20px/1.25 var(--display)}
+.edu p{color:var(--slate);font-size:15px;margin-top:6px}
+
+/* skills */
+#skills{background:var(--paper);border-block:1px solid var(--rule)}
+.skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.skill-grid h3{font:600 20px/1.2 var(--display);margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.skill-grid ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.skill-grid li{font-size:15px;padding:6px 12px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+.langs{margin-top:40px;color:var(--slate);font-size:15px}
+.langs b{color:var(--ink);font-weight:600}
+
+/* contact */
+#contact{padding-bottom:60px}
+.big{font:800 clamp(44px,8vw,112px)/.92 var(--display);letter-spacing:-.045em;max-width:12ch}
+.contact-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:36px}
+.email{font:500 clamp(18px,2vw,22px)/1 var(--body);padding:14px 20px;border-radius:12px;background:var(--paper);border:1px solid var(--rule)}
+.copied{font-size:14px;color:var(--petrol);min-width:60px}
+footer{border-top:1px solid var(--rule);margin-top:90px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;color:var(--slate)}
+
+/* responsive */
+@media (max-width:900px){
+  .lab{grid-template-columns:1fr}
+  .screen{position:relative;top:0;order:-1}
+  .skill-grid{grid-template-columns:1fr;gap:28px}
+  .hero-meta{grid-template-columns:1fr;gap:24px}
+}
+@media (max-width:720px){
+  .links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:0;background:var(--fog);border-bottom:1px solid var(--rule);padding:8px 28px 18px}
+  .links.open{display:flex}
+  .links li{width:100%}
+  .links a{display:block;padding:10px 0;font-size:17px}
+  .menu-btn{display:inline-flex}
+  .edu{grid-template-columns:1fr}
+  summary{grid-template-columns:1fr auto}
+  summary .when{grid-column:1}
+  summary .plus{grid-row:1;grid-column:2}
+  section{padding:80px 0}
+  .trace-box{height:170px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body>
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-brand">
-    <div class="nav-avatar">ZS</div>
-    <span class="nav-name">Zainab Sohail</span>
+
+<nav id="nav">
+  <div class="wrap">
+    <a class="mono" href="#top" aria-label="Zainab Sohail, back to top"><span>Z</span><span>S</span></a>
+    <ul class="links" id="links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a class="btn" href="Resume-ZainabSohail.pdf">Download CV</a></li>
+    </ul>
+    <button class="btn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="links">Menu</button>
   </div>
-  <ul class="nav-links">
-    <li><a href="#about" class="active">About</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="mailto:zainabsohail09@gmail.com" class="nav-cv">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 4v16M16 4v16M4 12h16"/></svg>
-    Contact Me
-  </a>
 </nav>
-<!-- ─── HERO ─── -->
-<section class="hero" id="about">
-  <div class="hero-location">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-    Erlangen, Germany
-  </div>
-  <h1>Zainab Sohail</h1>
-  <p class="hero-role">MSc AI · Data &amp; AI Solutions</p>
-  <p class="hero-bio">
-    MSc Artificial Intelligence student at FAU Erlangen-Nürnberg (graduating March 2027) with almost five years at Siemens Healthineers across innovation analytics, process automation and digital solutions. Master's research on foundation-model robustness in computer vision; thesis on EEG pain biomarkers. Open to graduate programs and full-time roles in AI, data and digitalization from 2027.
-  </p>
-  <div class="hero-actions">
-    <a href="#projects" class="btn-cyan">
-      View Projects →
-    </a>
-    <a href="#contact" class="btn-ghost">
-      Get in Touch
-    </a>
-  </div>
-  <div class="hero-social">
-    <!-- LinkedIn -->
-    <a href="https://linkedin.com/in/zainab-sohail" target="_blank" title="LinkedIn">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-    </a>
-    <!-- GitHub -->
-    <a href="https://github.com/xo58gole" target="_blank" title="GitHub">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
-    </a>
-    <!-- Email -->
-    <a href="mailto:zainabsohail09@gmail.com" title="Email">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </a>
-  </div>
-  <div class="scroll-hint">
-    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
-    <span>Scroll</span>
-  </div>
-</section>
-<!-- ─── RESEARCH STATEMENT ─── -->
-<section class="section" id="statement">
-  <p class="section-eyebrow">About My Work</p>
-  <h2 class="section-title">What I Work On &amp; Why</h2>
-  <div class="statement-grid">
-    <div class="statement-text">
-      <p>
-        My research centres on <strong>understanding when and why deep learning models fail under real-world conditions</strong>, particularly foundation models deployed on images that diverge from their training distribution. This question matters most in high-stakes domains like medical imaging, where model confidence must be calibrated against routine acquisition variability. Low resolution, motion blur, and sensor noise are not edge cases but structural features of clinical data.
-      </p>
-      <div class="insight-box">
-        <strong>Core question I investigate:</strong> Under what conditions does a foundation model's performance degrade non-linearly, and can we predict or recover from those failure points?
-      </div>
-      <p>
-        My Master's-level work has attacked this through a <strong>controlled robustness study of SAM on PASCAL VOC</strong>, evaluating segmentation performance across ~2,900 images under two degradation types: low resolution (4x and 5x downsampling) and Gaussian noise (σ=25 and σ=50). A key finding was that low-resolution degradation is significantly more detrimental than noise. At 5x downsampling, SAM loses boundary signal entirely and cannot produce coherent masks, while at σ=50 noise, preprocessing with BM3D largely restores performance. Prompt strategy also matters: a bounding box with corner points consistently outperforms single center-point clicking on degraded images.
-      </p>
-      <p>
-        In parallel, I reproduced the <strong>SAM-REF interactive segmentation pipeline</strong> end-to-end: dataset indexing, embedding caching, experiment logging, and benchmark evaluation (NoC@90, NoC@95) across GrabCut, Berkeley, DAVIS, and SBD. Training used a 500-image COCO subset on an NVIDIA GTX 1080 Ti. Reproduction work sharpens the instinct for what implementation choices actually drive results versus what papers claim drives them.
-      </p>
-      <p>
-        <strong>For my Master's thesis</strong>, I'm working with Dr. Achim Schilling (Neuroscience Lab, Uniklinikum Erlangen) and Prof. Patrick Krauss (CCN Group, Pattern Recognition Lab, FAU) on EEG-based pain biomarkers: what in brain signals explains how much pain a person reports, both within one person and between people. The data comes from 678 participants across 9 laser-evoked-potential experiments recorded on 3 different EEG systems, so the question I keep asking in my vision work applies here too: does a finding hold up when the setup changes? Alongside my studies, almost five years at Siemens Healthineers have shown me the gap between a model that works in a notebook and one that people actually rely on.
-      </p>
-    </div>
-    <div class="statement-aside">
-      <div class="aside-box">
-        <h4>SAM Robustness Study</h4>
-        <div class="stat-row">
-          <div class="stat-card">
-            <span class="val">~2,900</span>
-            <span class="lbl">Images evaluated (PASCAL VOC)</span>
-          </div>
-          <div class="stat-card">
-            <span class="val">4× / 5×</span>
-            <span class="lbl">Low-res downsampling levels</span>
-          </div>
-          <div class="stat-card">
-            <span class="val">σ 25/50</span>
-            <span class="lbl">Gaussian noise levels tested</span>
-          </div>
-          <div class="stat-card">
-            <span class="val">BM3D</span>
-            <span class="lbl">Best noise recovery method</span>
-          </div>
-        </div>
-        <p style="font-size:0.72rem;color:var(--muted);margin-top:0.75rem;">Key finding: low-resolution is more detrimental than noise. Box + corners prompting most robust on degraded inputs.</p>
-      </div>
-      <div class="aside-box">
-        <h4>Master's Thesis</h4>
-        <ul>
-          <li>EEG-based pain biomarkers</li>
-          <li>678 participants · 9 experiments · 3 EEG systems</li>
-          <li>Neuroscience Lab, Uniklinikum Erlangen &amp; Pattern Recognition Lab, FAU</li>
-          <li>Submission: March 2027</li>
-          <li><a href="https://github.com/xo58gole/eeg-pain-thesis" target="_blank">Thesis code on GitHub</a></li>
-        </ul>
-      </div>
-      <div class="aside-box">
-        <h4>Reports</h4>
-        <ul>
-          <li><a href="Reports/SAM-REF-Project-Report.pdf" download>SAM-REF Reproduction - Project Report (PDF)</a></li>
-        </ul>
-      </div>
-      <div class="aside-box">
-        <h4>Currently Open To</h4>
-        <ul>
-          <li>Graduate programs and full-time roles</li>
-          <li>AI, data analytics and digitalization</li>
-          <li>Start: <strong style="color:var(--text)">from March 2027</strong></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ─── RESEARCH INTERESTS ─── -->
-<section class="section" id="research">
-  <p class="section-eyebrow">Focus Areas</p>
-  <h2 class="section-title">Research Interests</h2>
-  <div class="interests-grid">
-    <div class="interest-card">
-      <span class="icon">🔬</span>
-      <h3>Computer Vision & Segmentation</h3>
-      <p>Foundation model robustness; interactive and semantic segmentation; performance under real-world image degradation.</p>
-    </div>
-    <div class="interest-card">
-      <span class="icon">🏥</span>
-      <h3>Medical Imaging AI</h3>
-      <p>Applying deep learning to clinical image analysis; model reliability and uncertainty in diagnostic settings.</p>
-    </div>
-    <div class="interest-card">
-      <span class="icon">🧠</span>
-      <h3>Deep Learning</h3>
-      <p>Neural network evaluation, anomaly detection, classification, and generalisation across distribution shifts.</p>
-    </div>
-    <div class="interest-card">
-      <span class="icon">📐</span>
-      <h3>Reproducible ML Research</h3>
-      <p>Rigorous experimental design, controlled benchmarking, and transparent documentation of ML results.</p>
-    </div>
-    <div class="interest-card">
-      <span class="icon">🚗</span>
-      <h3>Autonomous & Connected Systems</h3>
-      <p>Data-driven perception for autonomous driving and mobility, including time-series and sensor analysis.</p>
-    </div>
-    <div class="interest-card">
-      <span class="icon">⚠️</span>
-      <h3>Uncertainty & Robustness</h3>
-      <p>Quantifying and communicating model uncertainty; calibration under domain shift and degraded inputs.</p>
-    </div>
-  </div>
-</section>
-<!-- ─── PROJECTS ─── -->
-<section class="section" id="projects">
-  <p class="section-eyebrow">Selected Work</p>
-  <h2 class="section-title">Projects</h2>
-  <div class="projects-list">
-    <div class="project-card">
-      <div class="project-top">
-        <h3>Master's Thesis: EEG Pain Biomarkers</h3>
-        <span class="project-badge">Master's Thesis · Ongoing</span>
-      </div>
-      <p class="project-sub">Neuroscience Lab, Uniklinikum Erlangen · Pattern Recognition Lab, FAU</p>
-      <p class="project-desc">
-        Analyzing EEG recordings to find which brain-signal features explain how much pain a person reports, within one person and between people. The dataset (Zhao et al., 2025) covers 678 participants across 9 laser-evoked-potential experiments recorded on 3 different EEG systems.
-      </p>
-      <div class="project-findings">
-        <div class="finding-pill"><span class="fval">678</span><span class="flbl">Participants</span></div>
-        <div class="finding-pill"><span class="fval">9</span><span class="flbl">Experiments</span></div>
-        <div class="finding-pill"><span class="fval">3</span><span class="flbl">EEG systems</span></div>
-      </div>
-      <div class="tags">
-        <span class="tag">EEG</span>
-        <span class="tag">Biomarkers</span>
-        <span class="tag">Python</span>
-        <span class="tag">Feature Analysis</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/xo58gole/eeg-pain-thesis" target="_blank">Code on GitHub →</a>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-top">
-        <h3>SAM Robustness Study</h3>
-        <span class="project-badge">Master's Research</span>
-      </div>
-      <p class="project-sub">Controlled Experiment Design · FAU Erlangen-Nürnberg · Visual Computing Lab</p>
-      <p class="project-desc">
-        Designed and executed a controlled robustness study evaluating SAM on PASCAL VOC across ~2,900 images under two degradation types: low resolution (4x and 5x downsampling) and Gaussian noise (σ=25, σ=50). Built the full analysis pipeline in Python covering data preparation, degradation application, metric evaluation (IoU), and comparative reporting. All variables except image quality were held constant to enable clean causal attribution. Additionally tested six preprocessing methods for noise recovery and six prompt strategies, finding that BM3D denoising and box+corners prompting yield the best degraded-image performance.
-      </p>
-      <div class="project-findings">
-        <div class="finding-pill">
-          <span class="fval">~2,900</span>
-          <span class="flbl">Images evaluated</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">4× / 5×</span>
-          <span class="flbl">Low-res levels tested</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">BM3D</span>
-          <span class="flbl">Best noise preprocessor</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">Box+pts</span>
-          <span class="flbl">Most robust prompt type</span>
-        </div>
-      </div>
-      <div class="tags">
-        <span class="tag">SAM</span>
-        <span class="tag">PASCAL VOC</span>
-        <span class="tag">Image Segmentation</span>
-        <span class="tag">IoU</span>
-        <span class="tag">Robustness Evaluation</span>
-        <span class="tag">Python</span>
-        <span class="tag">Prompt Engineering</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-top">
-        <h3>SAM-REF Reproduction</h3>
-        <span class="project-badge">Master's Research</span>
-      </div>
-      <p class="project-sub">End-to-End ML Pipeline · FAU Erlangen-Nürnberg · Cognitive Computer Vision Lab</p>
-      <p class="project-desc">
-        Reproduced the SAM-REF interactive segmentation pipeline (CVPR 2025) end-to-end in PyTorch under reduced data and compute constraints. Trained on a 500-image COCO subset (2,849 instances) and evaluated across four benchmarks: GrabCut, Berkeley, DAVIS, and SBD. Implemented dataset indexing, SAM embedding caching, two-stage training (StageA fine-tunes the decoder; StageB trains the GFR/LFR refiner), click simulation, and full NoC@90/NoC@95 evaluation. Key finding: StageA with ViT-H improved GrabCut NoC@90 from 4.46 to 4.22. Qualitatively, SAM's IoU collapsed to 34% at click 5 after a strong negative click, while the fine-tuned decoder held at 95.4%, demonstrating more stable click-by-click behavior even where aggregate NoC does not improve.
-      </p>
-      <div class="project-findings">
-        <div class="finding-pill">
-          <span class="fval">500</span>
-          <span class="flbl">COCO training images</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">4</span>
-          <span class="flbl">Benchmarks evaluated</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">4.46 → 4.22</span>
-          <span class="flbl">GrabCut NoC@90 (ViT-H)</span>
-        </div>
-        <div class="finding-pill">
-          <span class="fval">34% vs 95.4%</span>
-          <span class="flbl">SAM vs StageA IoU at click 5</span>
-        </div>
-      </div>
-      <div class="tags">
-        <span class="tag">SAM-REF</span>
-        <span class="tag">PyTorch</span>
-        <span class="tag">Interactive Segmentation</span>
-        <span class="tag">NoC@90 / NoC@95</span>
-        <span class="tag">Reproducibility</span>
-        <span class="tag">COCO</span>
-        <span class="tag">Embedding Caching</span>
-      </div>
-      <div class="project-links">
-        <a href="Reports/SAM-REF-Project-Report.pdf" download>
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Project Report (PDF)
-        </a>
-        <a href="https://github.com/xo58gole/SAM-REF-Reproduction" target="_blank">Code on GitHub →</a>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-top">
-        <h3>AI-Driven Innovation Analytics</h3>
-        <span class="project-badge">Industry · Siemens Healthineers</span>
-      </div>
-      <p class="project-sub">Innovation, Data Analysis &amp; Business Solutions · Oct 2025 – Present</p>
-      <p class="project-desc">
-        Scored 1,439 innovation ideas across 7 strategic dimensions, including commercial scalability, customer value, strategic fit and willingness to pay, and used semantic analysis and K-Means clustering to group them into 5 strategic clusters. Mapped the clusters to 4 FY26 strategic goals and identified the 3 highest-priority clusters for management, with recommendations for investment, pilots and scaling. Also segmented customer-service priorities across 15 international regions into 3 preference clusters and delivered 4 management-ready presentations.
-      </p>
-      <div class="project-findings">
-        <div class="finding-pill"><span class="fval">1,439</span><span class="flbl">Ideas scored</span></div>
-        <div class="finding-pill"><span class="fval">7</span><span class="flbl">Strategic dimensions</span></div>
-        <div class="finding-pill"><span class="fval">5</span><span class="flbl">Strategic clusters</span></div>
-        <div class="finding-pill"><span class="fval">15</span><span class="flbl">Regions segmented</span></div>
-      </div>
-      <div class="tags">
-        <span class="tag">K-Means Clustering</span>
-        <span class="tag">Semantic Analysis</span>
-        <span class="tag">Portfolio Prioritization</span>
-        <span class="tag">Management Reporting</span>
-        <span class="tag">Data Visualisation</span>
-        <span class="tag">Python</span>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-top">
-        <h3>AI-Powered Returns Document Extraction</h3>
-        <span class="project-badge">Personal Project</span>
-      </div>
-      <p class="project-sub">OCR Pipeline · Document AI · Robustness Testing</p>
-      <p class="project-desc">
-        Pipeline that turns photographed and scanned customer return forms into structured data (return ID, date, customer, part number, quantity, reason) using OpenCV preprocessing, Tesseract OCR and rule-based parsing. It tries several preprocessing variants per document, keeps the best OCR result and validates every field against ground truth across 5 image-quality conditions. Clean and noisy scans reach 100% field accuracy and rotated scans 87.5%, while low-resolution and blurred scans fail, which shows where a production system would need a stronger model.
-      </p>
-      <div class="project-findings">
-        <div class="finding-pill"><span class="fval">8</span><span class="flbl">Fields extracted</span></div>
-        <div class="finding-pill"><span class="fval">5</span><span class="flbl">Quality conditions tested</span></div>
-        <div class="finding-pill"><span class="fval">100%</span><span class="flbl">Field accuracy, clean and noisy</span></div>
-        <div class="finding-pill"><span class="fval">87.5%</span><span class="flbl">Field accuracy, rotated</span></div>
-      </div>
-      <div class="tags">
-        <span class="tag">Python</span>
-        <span class="tag">OpenCV</span>
-        <span class="tag">Tesseract OCR</span>
-        <span class="tag">Document AI</span>
-        <span class="tag">Evaluation</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/xo58gole/AI-Powered-Returns-Document-Extraction" target="_blank">Code on GitHub →</a>
-      </div>
-    </div>
-    <div class="project-card">
-      <div class="project-top">
-        <h3>Energiewende Analytics</h3>
-        <span class="project-badge">Personal Project</span>
-      </div>
-      <p class="project-sub">Business Intelligence · Energy Data</p>
-      <p class="project-desc">
-        End-to-end BI pipeline on German energy-transition data, from raw data to dashboards.
-      </p>
-      <div class="tags">
-        <span class="tag">BI</span>
-        <span class="tag">Data Pipeline</span>
-        <span class="tag">Dashboards</span>
-      </div>
-      <div class="project-links">
-        <a href="https://github.com/xo58gole/energiewende-analytics" target="_blank">Code on GitHub →</a>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ─── SKILLS ─── -->
-<section class="section" id="skills">
-  <p class="section-eyebrow">Toolkit</p>
-  <h2 class="section-title">Technical Skills</h2>
-  <div class="skills-grid">
-    <div class="skill-group">
-      <h3>ML & Deep Learning</h3>
-      <ul>
-        <li>PyTorch</li>
-        <li>scikit-learn</li>
-        <li>Deep Neural Networks</li>
-        <li>Anomaly Detection</li>
-        <li>Classification & Clustering</li>
-        <li>Time Series Analysis</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h3>Computer Vision</h3>
-      <ul>
-        <li>Segment Anything Model (SAM)</li>
-        <li>Image Segmentation</li>
-        <li>Robustness Evaluation</li>
-        <li>OpenCV</li>
-        <li>Degraded Image Analysis</li>
-        <li>IoU, Dice, mIoU, NoC</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h3>Programming & Data</h3>
-      <ul>
-        <li>Python (Pandas, NumPy)</li>
-        <li>SQL</li>
-        <li>Data Pipelines / ETL</li>
-        <li>Exploratory Data Analysis</li>
-        <li>Reproducible Experiment Design</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h3>Tools & Infrastructure</h3>
-      <ul>
-        <li>Git / GitLab CI/CD</li>
-        <li>Azure</li>
-        <li>Snowflake</li>
-        <li>Jupyter</li>
-        <li>Power BI</li>
-        <li>Power Automate</li>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1>Zainab<br><span class="last">Sohail</span></h1>
+    <div class="hero-meta">
+      <p class="lede">I turn messy operational data into dashboards, tools and decisions that teams actually use.</p>
+      <ul class="facts">
+        <li><b>Now</b> Data & business analysis at Siemens Healthineers</li>
+        <li><b>Studying</b> M.Sc. Artificial Intelligence, FAU Erlangen-Nürnberg</li>
+        <li><b>Based in</b> Erlangen, Germany, open to relocating or remote</li>
+        <li><b>Available</b> <span><span class="dot" aria-hidden="true"></span>&nbsp; Full-time from March 2027</span></li>
       </ul>
     </div>
   </div>
-</section>
-<!-- ─── EXPERIENCE ─── -->
-<section class="section" id="experience">
-  <p class="section-eyebrow">Background</p>
-  <h2 class="section-title">Industry Experience</h2>
-  <div class="exp-list">
-    <div class="exp-item">
-      <div class="exp-date">Oct 2025 – Present</div>
-      <div>
-        <p class="exp-role">Working Student: Innovation, Data Analysis &amp; Business Solutions</p>
-        <p class="exp-org">Siemens Healthineers</p>
-        <ul class="exp-bullets">
-          <li>Scored 1,439 innovation ideas across 7 strategic dimensions and clustered them into 5 strategic clusters (semantic analysis, K-Means)</li>
-          <li>Identified the 3 highest-priority clusters for management and delivered 4 management-ready presentations</li>
-          <li>Automate recurring team reporting and support the team with technical and digital solutions</li>
-        </ul>
-      </div>
+  <div class="trace-box" id="traceBox">
+    <canvas id="trace" aria-label="Animated signal line that bends toward your cursor" role="img"></canvas>
+    <span class="trace-hint" id="hint">Move your cursor across the line</span>
+  </div>
+  <div class="wrap hero-cta">
+    <a class="btn solid" href="#projects">See projects</a>
+    <a class="btn" href="https://www.linkedin.com/in/zainab-sohail" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn" href="https://github.com/xo58gole" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true" style="margin-top:56px">
+  <div class="marquee-track">
+    <span>Business analysis</span><span>Power BI dashboards</span><span>Python and SQL</span><span>Power Apps and Power Automate</span><span>Industrial AI</span><span>Stakeholder workshops</span><span>Computer vision</span>
+    <span>Business analysis</span><span>Power BI dashboards</span><span>Python and SQL</span><span>Power Apps and Power Automate</span><span>Industrial AI</span><span>Stakeholder workshops</span><span>Computer vision</span>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="head">
+      <h2>Projects</h2>
+      <p>Pick a project to see what it does. Each one is built around a problem I've seen in industry: energy, manufacturing, maintenance and documents.</p>
     </div>
-    <div class="exp-item">
-      <div class="exp-date">Jan 2023 – Sept 2025</div>
-      <div>
-        <p class="exp-role">Working Student: Data, Process Automation &amp; Digital Solutions</p>
-        <p class="exp-org">Siemens Healthineers</p>
-        <ul class="exp-bullets">
-          <li>Led development and rollout of a Power Apps platform used by 200+ employees</li>
-          <li>Automated 20+ workflows with Power Automate and built 5+ Power BI dashboards</li>
-          <li>Drove adoption across the 200+ user community with training and onboarding materials</li>
-        </ul>
-      </div>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="chip" aria-pressed="true" data-f="all">All</button>
+      <button class="chip" aria-pressed="false" data-f="analytics">Analytics</button>
+      <button class="chip" aria-pressed="false" data-f="ai">Applied AI</button>
+      <button class="chip" aria-pressed="false" data-f="cv">Computer vision</button>
     </div>
-    <div class="exp-item">
-      <div class="exp-date">Feb 2022 – Dec 2022</div>
-      <div>
-        <p class="exp-role">Working Student: Collaboration Tools, Change Communication &amp; Knowledge Sharing</p>
-        <p class="exp-org">Siemens Healthineers</p>
-        <ul class="exp-bullets">
-          <li>Supported the modernization of 20+ SharePoint sites with 10+ stakeholders</li>
-          <li>Wrote 20+ Microsoft 365 communications for global audiences</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-date">Sept 2020 – Oct 2021</div>
-      <div>
-        <p class="exp-role">Junior Software QA Engineer</p>
-        <p class="exp-org">Auriga Solutions</p>
-        <ul class="exp-bullets">
-          <li>Owned QA for new features of a Web, Android and iOS ticketing product: 1,000+ test cases, 500+ defects documented</li>
-          <li>Validated 50+ weekly production releases in a 12-person agile team</li>
-        </ul>
+    <div class="lab">
+      <ul class="plist" id="plist" role="tablist" aria-orientation="vertical" aria-label="Projects"></ul>
+      <div class="screen" role="tabpanel" id="panel" aria-live="polite">
+        <div class="screen-top"><span id="pyear"></span><span class="status" id="pstatus"><i></i><span></span></span></div>
+        <canvas id="viz"></canvas>
+        <div class="illus">Illustrative animation</div>
+        <div class="screen-body">
+          <h3 id="ptitle"></h3>
+          <p id="pdesc"></p>
+          <ul class="tags" id="ptags"></ul>
+          <a class="plink" id="plink" target="_blank" rel="noopener"></a>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<!-- ─── EDUCATION ─── -->
-<section class="section" id="education">
-  <p class="section-eyebrow">Academic Background</p>
-  <h2 class="section-title">Education</h2>
-  <div class="edu-list">
-    <div class="edu-card">
-      <div>
-        <p class="edu-degree">Master of Science in Artificial Intelligence</p>
-        <p class="edu-inst">Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU)</p>
-        <p class="edu-courses">Deep Learning · ML for Time Series · Pattern Recognition · Business Intelligence · Connected Mobility &amp; Autonomous Driving</p>
-        <p class="edu-courses">Started graduate studies in M.Sc. Data Science at FAU (2021); switched to M.Sc. Artificial Intelligence in 2023.</p>
-      </div>
-      <div class="edu-year">2023 – Mar 2027</div>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="head">
+      <h2>Experience</h2>
+      <p>Almost five years at Siemens Healthineers across three teams, plus a year in software QA before that. Open a role for details.</p>
     </div>
-    <div class="edu-card">
+    <ol class="timeline">
+      <li class="now">
+        <details open>
+          <summary>
+            <span class="role">Working Student, Innovation Strategy, Reporting & Business Analysis</span>
+            <span class="when">Oct 2025 – now</span>
+            <span class="org">Siemens Healthineers, Erlangen</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </summary>
+          <ul>
+            <li>Analyse innovation ideas for business and strategic value, and turn the findings into executive presentations.</li>
+            <li>Support digital innovation workshops and run day-to-day operations of the IdeaX platform.</li>
+            <li>Automate team reporting and document processes so the team stays aligned.</li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>
+            <span class="role">Working Student, Data, Process Automation & Digital Solutions</span>
+            <span class="when">Jan 2023 – Sep 2025</span>
+            <span class="org">Siemens Healthineers, Erlangen</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </summary>
+          <ul>
+            <li>Led a self-service cloud cost-saving platform built in Power Apps, rolled out to 200+ users.</li>
+            <li>Built Power BI dashboards and automated workflows with Power Automate.</li>
+            <li>Ran live user training on MS Teams and wrote onboarding guides, FAQs and SharePoint content.</li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>
+            <span class="role">Working Student, Collaboration Tools & Change Communication</span>
+            <span class="when">Feb 2022 – Dec 2022</span>
+            <span class="org">Siemens Healthineers, Erlangen</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </summary>
+          <ul>
+            <li>Restructured SharePoint sites so teams could find what they needed.</li>
+            <li>Drove internal change communication on Yammer and rewrote technical updates for business readers.</li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>
+            <span class="role">Junior Software Quality Assurance Engineer</span>
+            <span class="when">Sep 2020 – Oct 2021</span>
+            <span class="org">Auriga Solutions, Karachi</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </summary>
+          <ul>
+            <li>Turned technical requirements into test cases and ran test cycles.</li>
+            <li>Worked with cross-functional engineering teams in agile sprints.</li>
+          </ul>
+        </details>
+      </li>
+    </ol>
+
+    <div class="edu">
       <div>
-        <p class="edu-degree">Bachelor of Science in Software Engineering</p>
-        <p class="edu-inst">University of Karachi</p>
-        <p class="edu-courses"> Data Structures Application . AI Software Engineering . Data Warehousing and Data Mining &amp; Computer Logic Design</p>
+        <h3>M.Sc. Artificial Intelligence</h3>
+        <p>Friedrich-Alexander-Universität Erlangen-Nürnberg, 2021 – March 2027. Thesis on EEG pain biomarkers.</p>
       </div>
-      <div class="edu-year">2016 – 2020</div>
+      <div>
+        <h3>B.Sc. Software Engineering</h3>
+        <p>University of Karachi, 2016 – 2020</p>
+      </div>
     </div>
   </div>
 </section>
-<!-- ─── CONTACT ─── -->
-<section class="section" id="contact">
-  <p class="section-eyebrow">Get in Touch</p>
-  <h2 class="section-title">Contact</h2>
-  <div class="contact-grid">
-    <div class="contact-card">
-      <p class="c-label">Email</p>
-      <a href="mailto:zainabsohail09@gmail.com" class="c-val">zainabsohail09@gmail.com</a>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="head"><h2>Toolkit</h2></div>
+    <div class="skill-grid">
+      <div>
+        <h3>Data & analytics</h3>
+        <ul><li>Python</li><li>SQL</li><li>Pandas</li><li>NumPy</li><li>Power BI</li><li>Excel and pivot tables</li><li>Data visualisation</li></ul>
+      </div>
+      <div>
+        <h3>Business & people</h3>
+        <ul><li>Requirements gathering</li><li>Stakeholder management</li><li>Workshop support</li><li>Process documentation</li><li>User training</li><li>Change communication</li></ul>
+      </div>
+      <div>
+        <h3>Automation & AI</h3>
+        <ul><li>Power Apps</li><li>Power Automate</li><li>SharePoint Online</li><li>Microsoft 365</li><li>Computer vision</li><li>LLM and VLM apps</li><li>SAP and Salesforce</li></ul>
+      </div>
     </div>
-    <div class="contact-card">
-      <p class="c-label">Location</p>
-      <p class="c-val">Erlangen, Germany</p>
-    </div>
-    <div class="contact-card">
-      <p class="c-label">LinkedIn</p>
-      <a href="https://linkedin.com/in/zainab-sohail" target="_blank" class="c-val">zainab-sohail</a>
-    </div>
-    <div class="contact-card">
-      <p class="c-label">GitHub</p>
-      <a href="https://github.com/xo58gole" target="_blank" class="c-val">xo58gole</a>
-    </div>
-    <div class="contact-card">
-      <p class="c-label">Phone</p>
-      <p class="c-val">+49 157 5827 1626</p>
-    </div>
-    <div class="contact-card">
-      <p class="c-label">Status</p>
-      <p class="c-val" style="color:var(--cyan)">Open to graduate &amp; full-time roles from 2027</p>
-    </div>
-  </div>
-  <div class="contact-cta">
-    <a href="mailto:zainabsohail09@gmail.com" class="btn-cyan">Send an Email →</a>
-    <a href="https://linkedin.com/in/zainab-sohail" target="_blank" class="btn-ghost">Connect on LinkedIn</a>
+    <p class="langs"><b>Languages</b> English (professional), German (A2)</p>
   </div>
 </section>
-<footer>
-  Zainab Sohail · MSc AI, <span>FAU Erlangen-Nürnberg</span> · 2026
-</footer>
+
+<section id="contact">
+  <div class="wrap">
+    <h2 class="big">Let's work together.</h2>
+    <p style="margin-top:22px;max-width:52ch;color:var(--slate)">I'm looking for data analyst, business analyst and graduate programme roles in Germany or remote, starting March 2027.</p>
+    <div class="contact-row">
+      <span class="email" id="email">zainabsohail09@gmail.com</span>
+      <button class="btn solid" id="copyBtn">Copy email</button>
+      <a class="btn" href="mailto:zainabsohail09@gmail.com">Send an email</a>
+      <span class="copied" id="copied" aria-live="polite"></span>
+    </div>
+    <footer>
+      <span>Zainab Sohail, Erlangen</span>
+      <span><a href="https://www.linkedin.com/in/zainab-sohail" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="https://github.com/xo58gole" target="_blank" rel="noopener">GitHub</a></span>
+    </footer>
+  </div>
+</section>
+
 <script>
-  // Active nav link highlight on scroll
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navLinks.forEach(a => a.classList.remove('active'));
-        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-        if (active) active.classList.add('active');
-      }
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const C = {ink:'#0F2340', petrol:'#1F4E79', amber:'#E3A13A', slate:'#5A6B7F', screen:'#0C1C33', line:'#23395A', soft:'#8EA3B9', text:'#C9D6E3', green:'#4FB286'};
+
+/* nav */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), {passive:true});
+const menuBtn = document.getElementById('menuBtn'), links = document.getElementById('links');
+menuBtn.addEventListener('click', () => { const o = links.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); });
+links.addEventListener('click', e => { if (e.target.tagName === 'A') { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); }});
+
+function fit(cv){
+  const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+  cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+  const x = cv.getContext('2d'); x.setTransform(d,0,0,d,0,0); return {x, w:r.width, h:r.height};
+}
+
+/* hero trace */
+if (matchMedia('(hover: none)').matches) document.getElementById('hint').textContent = 'Drag along the line';
+const tc = document.getElementById('trace'), box = document.getElementById('traceBox');
+let T = fit(tc), mouse = {x:null, y:0}, amp = 0;
+addEventListener('resize', () => { T = fit(tc); V = fit(vc); });
+box.addEventListener('pointermove', e => { const r = box.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+box.addEventListener('pointerleave', () => { mouse.x = null; });
+const g = (d, s) => Math.exp(-(d*d)/(2*s*s));
+const beat = d => 1.0*g(d,6) - .28*g(d+16,7) - .38*g(d-14,8) + .16*g(d-62,18);
+let lastMx = 0;
+function drawTrace(t){
+  const {x, w, h} = T, mid = h*.58;
+  x.clearRect(0,0,w,h);
+  x.strokeStyle = 'rgba(31,78,121,.10)'; x.lineWidth = 1;
+  for (let gx = 0; gx < w; gx += 40){ x.beginPath(); x.moveTo(gx,0); x.lineTo(gx,h); x.stroke(); }
+  x.beginPath(); x.moveTo(0,mid); x.lineTo(w,mid); x.stroke();
+  amp += ((mouse.x !== null ? 1 : 0) - amp) * .08;
+  if (mouse.x !== null) lastMx += (mouse.x - lastMx) * .2;
+  const pull = Math.max(-h*.45, Math.min(h*.45, (mid - mouse.y)));
+  const period = w + 500, p1 = ((t*.16) % period) - 250, p2 = ((t*.16 + period/2) % period) - 250;
+  x.beginPath();
+  for (let px = 0; px <= w; px += 2){
+    let y = mid + Math.sin(px*.021 + t*.0016)*3 + Math.sin(px*.0067 - t*.0009)*6 + Math.sin(px*.13 + t*.004)*1.2;
+    y -= (beat(px - p1) + beat(px - p2)) * h * .3;
+    y -= amp * g(px - lastMx, 46) * pull;
+    px ? x.lineTo(px, y) : x.moveTo(px, y);
+  }
+  x.strokeStyle = C.petrol; x.lineWidth = 2.2; x.lineJoin = 'round'; x.stroke();
+  if (amp > .05){
+    const ly = mid - pull*amp;
+    x.fillStyle = C.amber; x.beginPath(); x.arc(lastMx, ly, 6*amp, 0, 7); x.fill();
+    x.strokeStyle = 'rgba(227,161,58,.5)'; x.setLineDash([3,4]); x.beginPath(); x.moveTo(lastMx,0); x.lineTo(lastMx,h); x.stroke(); x.setLineDash([]);
+  }
+}
+
+/* projects */
+const P = [
+  {id:'energy', title:'Energiewende Analytics', year:'2026', cat:['analytics'], status:'Live on GitHub', wip:false,
+   desc:'A business intelligence pipeline on Germany\'s energy transition: it pulls public power data, cleans and models it, and turns it into a dashboard that shows how renewables are changing the grid.',
+   tags:['BI pipeline','Python','SQL','Dashboards'], link:'https://github.com/xo58gole/energiewende-analytics'},
+  {id:'inspect', title:'Visual inspection with a vision-language model', year:'2026', cat:['ai','cv'], status:'In progress', wip:true,
+   desc:'Quality inspection for manufacturing. An anomaly detector flags defective parts in the MVTec AD dataset, then a vision-language model writes a structured inspection report a line engineer can read.',
+   tags:['Anomaly detection','MVTec AD','Claude API','JSON reports'], link:null},
+  {id:'rul', title:'Turbofan engine life predictor', year:'2026', cat:['ai','analytics'], status:'In progress', wip:true,
+   desc:'Predictive maintenance on NASA\'s C-MAPSS turbofan data. The model estimates how many cycles an engine has left, explains the estimate in plain English, and runs behind a FastAPI service with MLflow tracking.',
+   tags:['Time series','MLflow','FastAPI','Docker'], link:null},
+  {id:'docs', title:'AI-powered returns document extraction', year:'2025', cat:['ai'], status:'Live on GitHub', wip:false,
+   desc:'Reads returns paperwork and pulls out the fields a team needs, such as order number, reason and date, so nobody has to type them in by hand.',
+   tags:['Document AI','Python','Automation'], link:'https://github.com/xo58gole/AI-Powered-Returns-Document-Extraction'},
+  {id:'eeg', title:'EEG pain biomarkers (M.Sc. thesis)', year:'2026 – 27', cat:['analytics'], status:'Thesis, due March 2027', wip:true,
+   desc:'Data analysis and machine learning on laser-evoked EEG recordings, looking for signal features that track how much pain a person reports.',
+   tags:['Signal processing','Python','Machine learning','Reproducibility'], link:'https://github.com/xo58gole/eeg-pain-thesis'},
+  {id:'seg', title:'SAM-REF reproduction', year:'2025', cat:['cv'], status:'Live on GitHub', wip:false,
+   desc:'A reproduction of SAM-REF, a method that refines Segment Anything masks so object edges come out cleaner, with the experiments documented so anyone can rerun them.',
+   tags:['Segmentation','PyTorch','Computer vision','Reproducibility'], link:'https://github.com/xo58gole/SAM-REF-Reproduction'}
+];
+const plist = document.getElementById('plist'), vc = document.getElementById('viz');
+let V = fit(vc), cur = 0, t0 = performance.now();
+P.forEach((p,i) => {
+  const li = document.createElement('li'); li.dataset.cat = p.cat.join(' ');
+  li.innerHTML = `<button class="pbtn" role="tab" id="tab-${p.id}" aria-controls="panel" aria-selected="${i===0}" tabindex="${i===0?0:-1}"><span class="t">${p.title}</span><span class="s">${p.status}</span></button>`;
+  li.firstChild.addEventListener('click', () => select(i));
+  plist.appendChild(li);
+});
+plist.addEventListener('keydown', e => {
+  if (!['ArrowDown','ArrowUp'].includes(e.key)) return;
+  e.preventDefault();
+  const vis = [...plist.children].map((li,i)=>[li,i]).filter(([li])=>!li.hidden).map(([,i])=>i);
+  let k = vis.indexOf(cur) + (e.key === 'ArrowDown' ? 1 : -1);
+  k = (k + vis.length) % vis.length; select(vis[k]); plist.children[vis[k]].firstChild.focus();
+});
+function select(i){
+  cur = i; t0 = performance.now(); const p = P[i];
+  [...plist.querySelectorAll('.pbtn')].forEach((b,j) => { b.setAttribute('aria-selected', j===i); b.tabIndex = j===i ? 0 : -1; });
+  document.getElementById('panel').setAttribute('aria-labelledby', 'tab-'+p.id);
+  document.getElementById('ptitle').textContent = p.title;
+  document.getElementById('pdesc').textContent = p.desc;
+  document.getElementById('pyear').textContent = p.year;
+  const st = document.getElementById('pstatus'); st.classList.toggle('wip', p.wip); st.lastChild.textContent = p.status;
+  document.getElementById('ptags').innerHTML = p.tags.map(t=>`<li>${t}</li>`).join('');
+  const a = document.getElementById('plink');
+  if (p.link){ a.href = p.link; a.textContent = 'View the code on GitHub'; a.className = 'plink'; a.removeAttribute('aria-disabled'); }
+  else { a.removeAttribute('href'); a.textContent = 'Code coming soon'; a.className = 'plink off'; a.setAttribute('aria-disabled','true'); }
+  if (reduce) frame(performance.now());
+}
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x===c));
+  const f = c.dataset.f; let first = -1;
+  [...plist.children].forEach((li,i) => { const show = f==='all' || li.dataset.cat.includes(f); li.hidden = !show; if (show && first<0) first = i; });
+  if (plist.children[cur].hidden) select(first);
+}));
+
+/* preview drawers: each gets (ctx, w, h, seconds since selected) */
+const font = (s, w=400) => `${w} ${s}px 'IBM Plex Sans', sans-serif`;
+const monoF = s => `${s}px 'IBM Plex Mono', monospace`;
+function label(x, txt, px, py, col=C.soft, s=12, w=400){ x.fillStyle = col; x.font = font(s,w); x.fillText(txt, px, py); }
+const D = {
+  energy(x,w,h,s){
+    const L=48, R=w-20, Tp=30, B=h-40, n=96;
+    const solar = i => Math.max(0, Math.sin((i/n - .25)*Math.PI*2)) * .42;
+    const wind = i => .26 + .12*Math.sin(i/9 + 1) + .05*Math.sin(i/3.3);
+    const base = () => .18;
+    const X = i => L + (R-L)*i/(n-1), Y = v => B - (B-Tp)*v;
+    const layers = [[base, '#2C4566'], [wind, C.petrol], [solar, C.amber]];
+    let acc = new Array(n).fill(0);
+    const grow = Math.min(1, s/1.4);
+    layers.forEach(([f,col]) => {
+      x.beginPath();
+      for (let i=0;i<n;i++) x.lineTo(X(i), Y((acc[i]+f(i))*grow));
+      for (let i=n-1;i>=0;i--) x.lineTo(X(i), Y(acc[i]*grow));
+      x.closePath(); x.fillStyle = col; x.globalAlpha = .9; x.fill(); x.globalAlpha = 1;
+      for (let i=0;i<n;i++) acc[i] += f(i);
     });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  sections.forEach(s => observer.observe(s));
+    const i = Math.floor(((s*14) % n)); const tot = acc[i], ren = (wind(i)+solar(i))/tot;
+    x.strokeStyle = '#fff'; x.lineWidth = 1; x.beginPath(); x.moveTo(X(i), Tp-8); x.lineTo(X(i), B); x.stroke();
+    const hr = String(Math.floor(i/4)).padStart(2,'0')+':'+String((i%4)*15).padStart(2,'0');
+    label(x, hr, Math.min(X(i)+8, R-150), Tp+6, '#fff', 13, 600);
+    label(x, `Renewable share ${Math.round(ren*100)}%`, Math.min(X(i)+8, R-150), Tp+24, C.amber, 13, 600);
+    ['00:00','06:00','12:00','18:00','24:00'].forEach((t,k)=>label(x,t,L+(R-L)*k/4-16,B+22));
+    [['Solar',C.amber],['Wind',C.petrol],['Other','#2C4566']].forEach(([t,c],k)=>{ x.fillStyle=c; x.fillRect(L+k*80, h-14, 10, 10); label(x,t,L+k*80+16,h-5); });
+  },
+  inspect(x,w,h,s){
+    const cols=4, rows=3, gw = w*.5, cell = Math.min(gw/cols, (h-60)/rows), ox=24, oy=(h-cell*rows)/2, bad=6;
+    const scan = ((s*.45) % 1.25) * (cell*cols);
+    for (let r=0;r<rows;r++) for (let c=0;c<cols;c++){
+      const k=r*cols+c, cx=ox+c*cell+cell/2, cy=oy+r*cell+cell/2, rad=cell*.32;
+      const seen = ox + c*cell + cell/2 < ox + scan;
+      x.strokeStyle = '#2C4566'; x.lineWidth=1; x.strokeRect(ox+c*cell+4, oy+r*cell+4, cell-8, cell-8);
+      x.beginPath(); x.arc(cx,cy,rad,0,7); x.fillStyle = '#1B3050'; x.fill();
+      x.beginPath(); x.arc(cx,cy,rad*.45,0,7); x.strokeStyle='#3B587D'; x.lineWidth=2; x.stroke();
+      if (k===bad){ x.strokeStyle='#5F7690'; x.lineWidth=2; x.beginPath(); x.moveTo(cx-rad*.7,cy-rad*.2); x.lineTo(cx-rad*.1,cy+rad*.15); x.lineTo(cx+rad*.5,cy+rad*.05); x.stroke(); }
+      if (seen){
+        x.strokeStyle = k===bad ? C.amber : 'rgba(79,178,134,.7)'; x.lineWidth = k===bad?2.5:1.5;
+        x.strokeRect(ox+c*cell+4, oy+r*cell+4, cell-8, cell-8);
+      }
+    }
+    if (scan < cell*cols){ x.fillStyle='rgba(227,161,58,.18)'; x.fillRect(ox+scan-14, oy, 14, cell*rows); x.fillStyle=C.amber; x.fillRect(ox+scan, oy, 2, cell*rows); }
+    const found = ox + (bad%cols)*cell + cell/2 < ox+scan;
+    const rx = ox + cell*cols + 24, lines = ['{', '  "part_id": 7,', '  "verdict": "defect",', '  "type": "scratch",', '  "location": "upper left",', '  "score": 0.91', '}'];
+    x.font = monoF(Math.max(10, Math.min(13, w/56)));
+    if (found){
+      const shown = Math.min(lines.length, Math.floor(((s*.45)%1.25 - (bad%cols+.5)/cols)*30));
+      lines.slice(0, Math.max(0,shown)).forEach((l,k)=>{ x.fillStyle = k===2||k===3 ? C.amber : C.text; x.fillText(l, rx, oy+20+k*22); });
+    } else label(x, 'Scanning parts…', rx, oy+20, C.soft, 13);
+  },
+  rul(x,w,h,s){
+    const L=48,R=w-24,Tp=36,B=h-40, total=200, cyc = Math.min(total, (s*38)%(total+40));
+    const X = c => L+(R-L)*c/total, f = c => .15 + .00002*c*c + .035*Math.sin(c*.9) + .02*Math.sin(c*2.7);
+    const Y = v => B-(B-Tp)*v, thr = .85;
+    x.setLineDash([5,5]); x.strokeStyle='rgba(227,161,58,.6)'; x.beginPath(); x.moveTo(L,Y(thr)); x.lineTo(R,Y(thr)); x.stroke(); x.setLineDash([]);
+    label(x,'Failure threshold', R-110, Y(thr)-8, C.amber, 12);
+    x.beginPath(); for (let c=0;c<=cyc;c++){ const yy=Y(f(c)); c? x.lineTo(X(c),yy) : x.moveTo(X(c),yy); }
+    x.strokeStyle='#7FB0DA'; x.lineWidth=1.8; x.stroke();
+    x.beginPath(); x.arc(X(cyc), Y(f(cyc)), 4, 0, 7); x.fillStyle='#fff'; x.fill();
+    const rul = Math.max(0, Math.round(total - cyc));
+    x.fillStyle = rul < 30 ? C.amber : '#fff'; x.font = `800 ${Math.min(44,w/12)}px 'Bricolage Grotesque', sans-serif`;
+    x.fillText(rul, L+4, Tp+30);
+    label(x, 'cycles of life left (predicted)', L+4, Tp+50, C.soft, 13);
+    label(x, 'Sensor reading', L, B+24); label(x, `Cycle ${Math.round(cyc)}`, R-70, B+24);
+  },
+  docs(x,w,h,s){
+    const dx=28, dy=22, dw=w*.4, dh=h-44;
+    x.fillStyle='#E9EEF3'; x.fillRect(dx,dy,dw,dh);
+    x.fillStyle='#0F2340'; x.font = font(13,600); x.fillText('Return form', dx+16, dy+28);
+    const rows=[['Order no.','#48 201 993'],['Reason','Wrong size'],['Date','12.11.2026'],['Refund to','Original card']];
+    for (let k=0;k<9;k++){ x.fillStyle='#C3CDD8'; x.fillRect(dx+16, dy+48+k*((dh-70)/9), dw*(k%3? .7:.5), 5); }
+    const step = Math.floor((s*1.1) % (rows.length+2));
+    const fx = dx+dw+36;
+    label(x,'Extracted fields', fx, dy+18, C.soft, 13);
+    rows.forEach(([k,v],i) => {
+      const ry = dy+48 + i*((dh-70)/9)*2;
+      if (i < step){
+        x.strokeStyle=C.amber; x.lineWidth=1.5; x.strokeRect(dx+11, ry-8, dw*.75, 20);
+        x.strokeStyle='rgba(227,161,58,.35)'; x.beginPath(); x.moveTo(dx+11+dw*.75, ry+2); x.lineTo(fx-8, dy+48+i*42); x.stroke();
+        label(x,k,fx,dy+44+i*42,C.soft,12); label(x,v,fx,dy+62+i*42,'#fff',15,600);
+      } else { label(x,k,fx,dy+44+i*42,'#3B587D',12); x.fillStyle='#1B3050'; x.fillRect(fx,dy+52+i*42,110,12); }
+    });
+  },
+  eeg(x,w,h,s){
+    const ch=['Fz','Cz','Pz','C3','C4','Oz'], top=26, gap=(h-50)/ch.length, L=46, R=w-16;
+    const speed = 150, per = (R-L+120)/speed, ex = R - (s % per)*speed;
+    ch.forEach((nm,k)=>{
+      const cy = top + gap*(k+.5);
+      label(x,nm,10,cy+4,C.soft,12);
+      x.beginPath();
+      for (let px=L; px<=R; px+=2){
+        const u = px + s*speed;
+        let y = cy + Math.sin(u*.09+k)*3 + Math.sin(u*.031+k*2)*4 + Math.sin(u*.21+k*3)*1.5;
+        const d = px - ex, wgt = [.6,1,.8,.7,.7,.3][k];
+        y += (-1.0*g(d-28,7) + 1.7*g(d-58,11)) * gap*.45 * wgt;
+        px===L ? x.moveTo(px,y) : x.lineTo(px,y);
+      }
+      x.strokeStyle = k===1 ? '#9CC4E8' : '#5B86B3'; x.lineWidth=1.3; x.stroke();
+    });
+    if (ex > L){ x.strokeStyle=C.amber; x.setLineDash([4,4]); x.beginPath(); x.moveTo(ex,14); x.lineTo(ex,h-18); x.stroke(); x.setLineDash([]); label(x,'Laser stimulus',Math.min(ex+6,R-96),16,C.amber,12,600); }
+  },
+  seg(x,w,h,s){
+    const cx=w*.5, cy=h*.52, R0=Math.min(w,h)*.3, N=180;
+    const shape = a => R0*(1 + .18*Math.sin(3*a+.4) + .08*Math.sin(5*a+1.3) + .05*Math.sin(9*a));
+    const ph = (s % 5)/5;
+    for (let k=0;k<26;k++){ x.fillStyle='rgba(91,134,179,.12)'; x.fillRect((k*97)%w, (k*53)%h, 40+(k*13)%60, 26); }
+    x.beginPath(); for (let i=0;i<=N;i++){ const a=i/N*Math.PI*2, r=shape(a); x.lineTo(cx+Math.cos(a)*r, cy+Math.sin(a)*r); }
+    x.fillStyle='#2C4566'; x.fill();
+    x.fillStyle=C.amber; x.beginPath(); x.arc(cx-R0*.15, cy-R0*.1, 6, 0, 7); x.fill();
+    x.strokeStyle='#fff'; x.lineWidth=2; x.beginPath(); x.arc(cx-R0*.15, cy-R0*.1, 11, 0, 7); x.stroke();
+    if (ph > .15){
+      const refine = Math.min(1, (ph-.15)/.5), prog = Math.min(1,(ph-.15)/.25);
+      x.beginPath();
+      for (let i=0;i<=N*prog;i++){ const a=i/N*Math.PI*2; const rough = R0*(1 + .1*Math.sin(3*a)) + 10*Math.sin(a*14); const r = rough + (shape(a)-rough)*refine; x.lineTo(cx+Math.cos(a)*r, cy+Math.sin(a)*r); }
+      if (prog>=1){ x.closePath(); x.fillStyle='rgba(79,178,134,.22)'; x.fill(); }
+      x.strokeStyle=C.green; x.lineWidth=2.2; x.stroke();
+      label(x, refine<1 ? 'Coarse mask' : 'Refined mask', 18, h-18, refine<1 ? C.soft : C.green, 13, 600);
+      label(x, `Edge IoU ${(0.71 + .2*refine).toFixed(2)}`, w-120, h-18, '#fff', 13, 600);
+    } else label(x,'Point prompt',18,h-18,C.amber,13,600);
+  }
+};
+function frame(now){
+  drawTrace(reduce ? 0 : now);
+  const {x,w,h} = V; x.clearRect(0,0,w,h);
+  D[P[cur].id](x, w, h, reduce ? 99 : (now - t0)/1000);
+}
+function loop(now){ frame(now); requestAnimationFrame(loop); }
+document.fonts && document.fonts.ready.then(()=>{ T = fit(tc); V = fit(vc); });
+select(0);
+reduce ? frame(performance.now()) : requestAnimationFrame(loop);
+
+/* copy email */
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  const out = document.getElementById('copied');
+  try { await navigator.clipboard.writeText('zainabsohail09@gmail.com'); out.textContent = 'Copied'; }
+  catch { out.textContent = 'Select the address to copy it'; }
+  setTimeout(()=> out.textContent = '', 2500);
+});
 </script>
 </body>
 </html>
